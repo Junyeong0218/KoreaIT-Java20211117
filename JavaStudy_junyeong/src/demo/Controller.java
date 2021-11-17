@@ -6,15 +6,18 @@ public class Controller {
 	
 	Character character = null;
 	Inventory inventory = null;
+	Store store = null;
 	
 	ViewTitle viewTitle = null;
 	ViewIdle viewIdle = null;
 	
 	Scanner input = new Scanner(System.in);
 	
-	public Controller(Character character, ViewTitle viewTitle, ViewIdle viewIdle)
+	public Controller(Character character, Inventory inventory, Store store, ViewTitle viewTitle, ViewIdle viewIdle)
 	{
 		this.character = character;
+		this.inventory = inventory;
+		this.store = store;
 		this.viewTitle = viewTitle;
 		this.viewIdle = viewIdle;
 	}
@@ -23,26 +26,24 @@ public class Controller {
 	public void judgeToPlay()
 	{
 		String name;
-		
-		String s_temp;
-		int index;
+		int i_temp;
 		viewTitle.showTitle();
 		do
 		{
-			index = input.nextInt();
-			if(index > 2 || index < 1){
+			i_temp = input.nextInt();
+			if(i_temp > 2 || i_temp < 1){
 				System.out.println(" 잘못된 입력입니다.");
 				System.out.println(" 다시 입력해주세요.");
 			}
-			else if(index == 2){
+			else if(i_temp == 2){
 				System.exit(1);
 			}
 		}
-		while(index > 2 || index < 1);
+		while(i_temp > 2 || i_temp < 1);
 		
 		viewTitle.showTitle2();
 		input.nextLine();
-		s_temp = input.nextLine();
+		input.nextLine();
 		
 		viewTitle.showInputName();
 		name = input.next();

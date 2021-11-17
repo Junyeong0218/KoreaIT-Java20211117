@@ -1,7 +1,5 @@
 package demo;
 
-import java.util.Scanner;
-
 public class ViewTitle {
 	
 	public ViewTitle() {}

@@ -13,7 +13,7 @@ public class test1 {
 		ViewTitle viewTitle = new ViewTitle();
 		ViewIdle viewIdle = new ViewIdle(character);
 		
-		Controller controller = new Controller(character, viewTitle, viewIdle);
+		Controller controller = new Controller(character, inventory, store, viewTitle, viewIdle);
 		
 		controller.judgeToPlay();
 		
