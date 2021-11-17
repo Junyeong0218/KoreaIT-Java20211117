@@ -13,7 +13,7 @@ public class Character {
 	public Character()
 	{
 		this.name = "이름";
-		this.level = 1;
+		this.level = 21;
 		this.exp = 0;
 		this.money = 10_000;
 		
@@ -21,7 +21,7 @@ public class Character {
 		for(int i = 1; i < 31; i++)
 		{
 			neededExp[i-1] = ( (i+2) * i * 100 - temp); // 경험치 = (레벨 + 2) * 레벨 * 100
-			bonusPercent[i-1] = ((double)i-1)/100; // 제작 성공률 보너스 = (레벨-1) * 0.01
+			bonusPercent[i-1] = ((double)i-1)/100; // 제작 성공률 보너스 = (레벨-1) * 0.01 (1%)
 			temp = (i+2) * i * 100;
 		}
 	}
@@ -41,13 +41,15 @@ public class Character {
 	public int getMoney() {
 		return money;
 	}
-
-	public int[] getNeededExp() {
-		return neededExp;
+	
+	public double getNeededExp(int level)
+	{
+		return neededExp[level-1];
 	}
-
-	public double[] getBonusPercent() {
-		return bonusPercent;
+	
+	public double getBonusPercent(int level)
+	{
+		return bonusPercent[level-1];
 	}
 	
 	public void setName(String name)
@@ -59,34 +61,43 @@ public class Character {
 		this.level++;
 	}
 
-	public void setExp(int exp) {
+	public void earnExp(int exp) {
 		this.exp += exp;
 	}
-
-	public void setMoney(int money) {
+	
+	public void earnMoney(int money)
+	{
 		this.money += money;
 	}
+	
+	public void loseMoney(int money)
+	{
+		this.money -= money;
+	}
+	
 	
 	// 정보창 호출
 	public void showInfo()
 	{
 		clearLines();
-		System.out.println("#######< 스테이터스 >########");
+		System.out.println("####################< 스테이터스 >####################");
+		System.out.println();
 		System.out.println("이름 : " + name);
 		System.out.println("레벨 : " + level);
 		System.out.println("경험치 : " + exp + " / " + neededExp[level-1]);
 		System.out.println("금전 : " + money);
 		if(bonusPercent[level-1] == 0)
 		{
-		System.out.printf("성공률 보너스 : %.0f", bonusPercent[level-1]);	System.out.println(" %");
+		System.out.printf("성공률 보너스 : %.0f", bonusPercent[level-1]*100);	System.out.println(" %");
 		} else if(bonusPercent[level-1] < 0.1)
 		{
-			System.out.printf("성공률 보너스 : %.2f", bonusPercent[level-1]);	System.out.println(" %");
+			System.out.printf("성공률 보너스 : %.2f", bonusPercent[level-1]*100);	System.out.println(" %");
 		} else
 		{
-			System.out.printf("성공률 보너스 : %.1f", bonusPercent[level-1]);	System.out.println(" %");
+			System.out.printf("성공률 보너스 : %.1f", bonusPercent[level-1]*100);	System.out.println(" %");
 		}
-		System.out.println("##########################");
+		System.out.println();
+		System.out.println("#####################################################");
 		// 이름 : (7) + 한글(2개당3) or 영어&숫자(개당1)
 		// 레벨 : (7) + 1자리 or 2자리
 		// 경험치 : (9) + 현재 경험치 + " / "(3) + 필요 경험치
@@ -102,9 +113,7 @@ public class Character {
 			this.exp -= neededExp[level-1];
 			this.level++;
 			System.out.println("레벨업!!");
-			System.out.println("스테이터스를 확인해주세요.");
 			System.out.println();
-			this.showInfo();
 		}
 	}
 	
