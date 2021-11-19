@@ -13,7 +13,7 @@ public class Character {
 	public Character()
 	{
 		this.name = "이름";
-		this.level = 21;
+		this.level = 1;
 		this.exp = 0;
 		this.money = 10_000;
 		
@@ -80,21 +80,29 @@ public class Character {
 	public void showInfo()
 	{
 		clearLines();
-		System.out.println("####################< 스테이터스 >####################");
+		System.out.println("#####################################################");
+		System.out.println("#                                                   #");
+		System.out.println("                     정       보                     ");
+		System.out.println("#                                                   #");
+		System.out.println("#####################################################");
 		System.out.println();
-		System.out.println("이름 : " + name);
-		System.out.println("레벨 : " + level);
-		System.out.println("경험치 : " + exp + " / " + neededExp[level-1]);
-		System.out.println("금전 : " + money);
+		System.out.println(" 이름 : " + name);
+		System.out.println();
+		System.out.println(" 레벨 : " + level);
+		System.out.println();
+		System.out.println(" 경험치 : " + exp + " / " + neededExp[level-1]);
+		System.out.println();
+		System.out.println(" 골드 : " + money);
+		System.out.println();
 		if(bonusPercent[level-1] == 0)
 		{
-		System.out.printf("성공률 보너스 : %.0f", bonusPercent[level-1]*100);	System.out.println(" %");
+		System.out.printf(" 성공률 보너스 : %.0f", bonusPercent[level-1]*100);	System.out.println(" %");
 		} else if(bonusPercent[level-1] < 0.1)
 		{
-			System.out.printf("성공률 보너스 : %.2f", bonusPercent[level-1]*100);	System.out.println(" %");
+			System.out.printf(" 성공률 보너스 : %.2f", bonusPercent[level-1]*100);	System.out.println(" %");
 		} else
 		{
-			System.out.printf("성공률 보너스 : %.1f", bonusPercent[level-1]*100);	System.out.println(" %");
+			System.out.printf(" 성공률 보너스 : %.1f", bonusPercent[level-1]*100);	System.out.println(" %");
 		}
 		System.out.println();
 		System.out.println("#####################################################");
@@ -119,7 +127,7 @@ public class Character {
 	
 	public void clearLines()
 	{
-		for(int i = 0; i < 55; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			System.out.println();
 		}

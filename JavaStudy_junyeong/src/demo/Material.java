@@ -4,11 +4,13 @@ public class Material {
 	
 	String materialName;
 	int currentHave;
+	int price;
 	
-	public Material(String materialName)
+	public Material(String materialName, int price)
 	{
 		this.materialName = materialName;
-		this.currentHave = 100;
+		this.currentHave = 0;
+		this.price = price;
 	}
 
 	public String getMaterialName() {
@@ -18,9 +20,9 @@ public class Material {
 	public int getCurrentHave() {
 		return currentHave;
 	}
-
-	public void setMaterialName(String materialName) {
-		this.materialName = materialName;
+	
+	public int getPrice() {
+		return price;
 	}
 	
 	public void buyMaterial(int quantity)

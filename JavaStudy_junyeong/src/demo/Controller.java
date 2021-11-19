@@ -3,25 +3,19 @@ package demo;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.print.attribute.standard.PrinterMakeAndModel;
-
 public class Controller {
 	
 	Character character = null;
 	Inventory inventory = null;
-	Store store = null;
 	
-	ViewTitle viewTitle = null;
 	ViewIdle viewIdle = null;
 	
 	Scanner input = new Scanner(System.in);
 	
-	public Controller(Character character, Inventory inventory, Store store, ViewTitle viewTitle, ViewIdle viewIdle)
+	public Controller(Character character, Inventory inventory, ViewIdle viewIdle)
 	{
 		this.character = character;
 		this.inventory = inventory;
-		this.store = store;
-		this.viewTitle = viewTitle;
 		this.viewIdle = viewIdle;
 	}
 	
@@ -30,7 +24,7 @@ public class Controller {
 	{
 		String name;
 		int i_temp;
-		viewTitle.showTitle();
+		viewIdle.showTitle();
 		do
 		{
 			i_temp = input.nextInt();
@@ -44,11 +38,11 @@ public class Controller {
 		}
 		while(i_temp > 2 || i_temp < 1);
 		
-		viewTitle.showTitle2();
+		viewIdle.showTitle2();
 		input.nextLine();
 		input.nextLine();
 		
-		viewTitle.showInputName();
+		viewIdle.showInputName();
 		name = input.next();
 		character.setName(name);
 	}
@@ -70,27 +64,24 @@ public class Controller {
 			else if(i_temp == 1)
 			{
 				makingProduct();
-				i_temp = 0;
 			}
 			else if(i_temp == 2)
 			{
-				viewIdle.showInventory();
 				selectInventory();
-				i_temp = 0;
 			}
 			else if(i_temp == 3)
 			{
-				viewIdle.showStore();
+				selectStore();
 			}
 			else
 			{
 				System.exit(1);
 			}	
 		}
-		while(i_temp > 4 || i_temp < 1);
+		while(true);
 	}
 	
-	// 제작 메뉴
+	// 제작 메뉴 구현 완료
 	public void makingProduct()
 	{
 		int i_temp;
@@ -138,18 +129,18 @@ public class Controller {
 				// 재료 3개일 때
 				if(i_index_3 != -1)
 				{
-					if(inventory.material[i_index_1].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_1() )
+					if(inventory.material[i_index_1].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_1()-1 )
 					{
 						possibleQuantity = inventory.material[i_index_1].getCurrentHave() / inventory.product[i_temp-1].getNeededMaterialQuantity_1();
 						
-						if(inventory.material[i_index_2].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_2() )
+						if(inventory.material[i_index_2].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_2()-1 )
 						{
 							if(possibleQuantity > inventory.material[i_index_2].getCurrentHave() / inventory.product[i_temp-1].getNeededMaterialQuantity_2() )
 							{
 								possibleQuantity = inventory.material[i_index_2].getCurrentHave() / inventory.product[i_temp-1].getNeededMaterialQuantity_2();
 							}
 							
-							if(inventory.material[i_index_3].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_3() )
+							if(inventory.material[i_index_3].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_3()-1 )
 							{
 								isPossible = true;
 								
@@ -180,11 +171,11 @@ public class Controller {
 				// 재료 2개일 때
 				else
 				{
-					if(inventory.material[i_index_1].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_1() )
+					if(inventory.material[i_index_1].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_1()-1 )
 					{
 						possibleQuantity = inventory.material[i_index_1].getCurrentHave() / inventory.product[i_temp-1].getNeededMaterialQuantity_1();
 						
-						if(inventory.material[i_index_2].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_2() )
+						if(inventory.material[i_index_2].getCurrentHave() > inventory.product[i_temp-1].getNeededMaterialQuantity_2()-1 )
 						{
 							isPossible = true;
 							
@@ -313,6 +304,8 @@ public class Controller {
 	// 인벤토리 내부 구현 완료
 	public void selectInventory()
 	{
+		viewIdle.showInventory();
+		
 		int i_temp;
 		
 		do
@@ -349,6 +342,145 @@ public class Controller {
 		
 	}
 	
-	
+	// 상점 메뉴
+	public void selectStore()
+	{
+		boolean wrongInput = false;
+		
+		int i_temp;
+		
+		do
+		{
+			viewIdle.showStore(wrongInput);
+			i_temp = input.nextInt();
+			
+			// 범위 밖의 숫자 입력시
+			if(i_temp > 3 || i_temp < 1)
+			{
+				wrongInput = true;
+				viewIdle.showStore(wrongInput);
+			}
+			// 재료 구매
+			else if(i_temp == 1)
+			{
+				wrongInput = false;
+				int i_temp2;
+				
+				viewIdle.showBuyMaterial(wrongInput);
+				
+				do
+				{
+					i_temp2 = input.nextInt();
+					
+					// 범위 밖의 숫자 입력시
+					if(i_temp2 > 7 || i_temp2 < 1)
+					{
+						wrongInput = true;
+						viewIdle.showBuyMaterial(wrongInput);
+					}
+					// 재료 정확히 선택시
+					else if(i_temp2 > 0 && i_temp2 < 7)
+					{
+						wrongInput = false;
+						int quantity;
+						
+						do
+						{
+							viewIdle.showBuyMaterialQuantity(i_temp2, wrongInput);
+							
+							quantity = input.nextInt();
+							
+							if(quantity > 1000 || quantity < 0)
+							{
+								wrongInput = true;
+								viewIdle.showBuyMaterialQuantity(i_temp2, wrongInput);
+							}
+							// 수량까지 정확히 입력한 경우
+							else if(quantity > 0 && quantity < 1001)
+							{
+								// 소지금이 구매가격보다 적을 경우
+								if(character.getMoney() < (quantity * inventory.material[i_temp2-1].getPrice() ) )
+								{
+									System.out.println(" 소지금이 부족합니다.");
+									System.out.println(" 이전 화면으로 돌아갑니다.");
+								}
+								// 소지금이 충분할 경우
+								else
+								{
+									character.loseMoney( quantity * inventory.material[i_temp2-1].getPrice() );
+									inventory.material[i_temp2-1].buyMaterial(quantity);
+									viewIdle.afterBuying();
+								}
+							}
+							
+						}
+						while(quantity > 1000 || quantity < 0);
+						
+					}
+				
+				}
+				while(i_temp2 > 7 || i_temp2 < 1);
+				
+			}
+			// 제품 판매
+			else if(i_temp == 2)
+			{
+				wrongInput = false;
+				int i_temp2;
+				
+				viewIdle.showSellProduct(wrongInput);
+				
+				do
+				{
+					i_temp2 = input.nextInt();
+					
+					// 범위 밖의 숫자 입력시
+					if(i_temp2 < 1 || i_temp2 > 11)
+					{
+						wrongInput = true;
+						viewIdle.showSellProduct(wrongInput);
+					}
+					// 제품 정확히 선택시
+					else if(i_temp2 > 0 && i_temp2 < 11)
+					{
+						wrongInput = false;
+						int quantity;
+						int currentQuantity;
+						
+						viewIdle.showSellProductQuantity(i_temp2, wrongInput);
+						
+						do
+						{
+							quantity = input.nextInt();
+							currentQuantity = inventory.product[i_temp2-1].getCurrentHave();
+							
+							// 범위 밖의 숫자 입력시
+							if(quantity < 0 || quantity > currentQuantity )
+							{
+								wrongInput = true;
+								viewIdle.showSellProductQuantity(i_temp2, wrongInput);
+							}
+							// 제품 수량 정확히 입력시
+							else if(quantity > 0 && quantity < currentQuantity + 1 )
+							{
+								character.earnMoney(quantity * inventory.product[i_temp2-1].getPrice() );
+								inventory.product[i_temp2-1].sellProduct(quantity);
+								viewIdle.afterSelling();
+								break;
+							}
+						}
+						while(quantity < 0 || quantity > currentQuantity );
+					}
+				}
+				while(i_temp < 1 || i_temp2 > 11);
+			}
+			// 메인으로 돌아가기
+			else if(i_temp == 3)
+			{
+				break;
+			}
+		}
+		while(true);
+	}
 
 }

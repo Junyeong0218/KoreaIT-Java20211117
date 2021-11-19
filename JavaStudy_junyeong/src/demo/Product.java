@@ -12,13 +12,14 @@ public class Product {
 	private int neededMaterialQuantity_2;
 	private int neededMaterialQuantity_3;
 	private int exp;
+	private int price;
 	
 	private double basicSuccessRate;
 	private final double DOUBLE_MAKING_RATE;
 	
 	public Product(String productName, String neededMaterialName_1, String neededMaterialName_2,
 			String neededMaterialName_3, int neededMaterialQuantity_1, int neededMaterialQuantity_2,
-			int neededMaterialQuantity_3, double basicSuccessRate, int exp)
+			int neededMaterialQuantity_3, double basicSuccessRate, int exp, int price)
 	{	
 		this.productName = productName;
 		this.neededMaterialName_1 = neededMaterialName_1;
@@ -30,6 +31,7 @@ public class Product {
 		this.basicSuccessRate = basicSuccessRate;
 		this.DOUBLE_MAKING_RATE = 0.07;
 		this.exp = exp;
+		this.price = price;
 	}
 
 	public String getProductName() {
@@ -75,9 +77,10 @@ public class Product {
 	public int getExp() {
 		return exp;
 	}
-
-	public void setCurrentHave(int currentHave) {
-		this.currentHave = currentHave;
+	
+	public int getPrice()
+	{
+		return price;
 	}
 	
 	public void makeProduct(int quantity)
