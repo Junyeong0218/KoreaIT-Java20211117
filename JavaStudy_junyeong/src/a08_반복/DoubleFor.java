@@ -1,5 +1,7 @@
 package a08_นÝบน;
 
+import java.util.Scanner;
+
 public class DoubleFor {
 
 	public static void main(String[] args) {

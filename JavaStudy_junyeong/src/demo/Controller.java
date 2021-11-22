@@ -226,7 +226,6 @@ public class Controller {
 					{
 						int rand = random.nextInt(10000)+1;
 						int successRate;
-						
 						if( ( ( inventory.product[i_temp-1].getbasicSuccessRate() + character.getBonusPercent(character.getLevel() ) ) * 10000 ) > 10000)
 						{
 							successRate = 10001;
