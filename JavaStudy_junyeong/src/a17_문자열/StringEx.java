@@ -1,4 +1,4 @@
-package a16_기본클래스;
+package a17_문자열;
 
 import java.util.Scanner;
 
@@ -8,6 +8,8 @@ public class StringEx {
 		Scanner in = new Scanner(System.in);
 		System.out.println("이름입력: ");
 		String name = in.nextLine();
+		
+		in.close();
 		
 		String name1 = "김준일";
 		String name2 = "김준일";

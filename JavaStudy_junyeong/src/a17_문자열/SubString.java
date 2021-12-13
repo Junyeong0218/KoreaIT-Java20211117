@@ -1,4 +1,4 @@
-package a16_기본클래스;
+package a17_문자열;
 
 /**
  * 
@@ -13,10 +13,15 @@ package a16_기본클래스;
 public class SubString {
 
 	public static void main(String[] args) {
-		String str = "안녕하세요. 반갑습니다.";
+		//String str = "안녕하세요. 반갑습니다.";
 		//System.out.println(str.substring(0, 6));
 		
 		String data = "# 안녕하세요. 반갑습니다.";
+		while(data != "" || data == null) {
+			System.out.println(data.substring(0, data.indexOf(" ")+1));
+			data = data.substring(data.indexOf(" ")+1, data.length());
+		}
+		
 		
 		String number = "123456789";
 		for(int i=0; i<number.length(); i++) {
@@ -24,3 +29,5 @@ public class SubString {
 		}
 	}
 }
+
+// mvnrepository.com
