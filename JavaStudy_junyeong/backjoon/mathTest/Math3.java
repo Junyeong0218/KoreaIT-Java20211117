@@ -18,12 +18,31 @@ public class Math3 {
 			sum++;
 		}
 		
+		int up, down;
 		boolean isUp = false;
-		if(max%2 == 1) {
-			
+		
+		if((sum-1)%2 == 1) {
+			// 홀수 = 아래로 -> 분자 = 1 분모 = max-1
+			up = 1;
+			down = sum-1;
+		} else {
+			up = sum-1;
+			down = 1;
+			isUp = true;
 		}
 		
+		for(int i=0; i<max-n; i++) {
+			if(isUp) {
+				up--;
+				down++;
+			} else {
+				up++;
+				down--;
+			}
+		}
 		
-		System.out.println(max + " " + sum);
+		bw.write(Integer.toString(up) + "/" + Integer.toString(down));
+		bw.flush();
+		bw.close();
 	}
 }
