@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class Math10 {
+public class Math11 {
 
 	public static void main(String[] args) throws IOException {
 		
@@ -33,38 +33,47 @@ public class Math10 {
 	
 	public static int xtoy(int distance) {
 		int cnt = 0;
-		if(distance < 2) {
-			cnt++;
-			return cnt;
-		} else if(distance == 2) {
-			cnt += 2;
-			return cnt;
+		int i = 1;
+		int max = distance;
+		boolean isZero = false; 
+		
+		while(!isZero) {
+			
+			for(int j=i; j<max; j++) {
+				distance -= j*2;
+				cnt += 2;
+				System.out.println("1. "+ j + " " + distance + " " + cnt);
+				
+				if(distance == 0) {
+					isZero = true;
+					break;
+				} else if(distance < 0) {
+					if(distance + j == 0) {
+						cnt--;
+						distance += j;
+						System.out.println("123");
+						isZero = true;
+						break;
+					} else {
+						i = j-1;
+						distance += j*2;
+						cnt -= 2;
+						System.out.println("2. " + i + " " + distance + " " + cnt);
+						if(distance - i == 0) {
+							distance -= i;
+							cnt++;
+							isZero = true;
+							break;
+						} /*else if(distance - (i*2) -1 == 0) {
+							cnt++;
+							isZero = true;
+							break;
+						}*/
+					}
+				}
+			}
 		}
 		
-		int move = 1;
-		while(true) {
-			distance -= move*2;
-			cnt += 2;
-			
-			if(distance < 0) {
-				cnt -= 2;
-				distance += move*2;
-				move--;
-				continue;
-			} else if(distance == 0) {
-				break;
-			} else if(distance == (move+1)*2 || distance == move*2 +1){
-				cnt += 2;
-				break;
-			} else if(distance == move*2 || distance == move) {
-				cnt++;
-				break;
-			} else if(distance == move-1) {
-				cnt++;
-				break;
-			}
-			move++;
-		}
 		
 		return cnt;
 	}
