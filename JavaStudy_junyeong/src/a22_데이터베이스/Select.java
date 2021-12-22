@@ -14,15 +14,16 @@ public class Select {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		ResultSet rs = null; // select 할 때만 사용
 		String sql = null;
 		
 		try {
 			con = pool.getConnection();
 			sql = "select id, username, password, name, email from user_mst";
 			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery(); // Set 형식의 List로 반환됨.
 
+			// ResultSet.next() == boolean
 			while(rs.next()) {
 				System.out.println(rs.getInt(1));
 				System.out.println(rs.getString(2));
@@ -32,6 +33,8 @@ public class Select {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
 		}
 	}
 }
