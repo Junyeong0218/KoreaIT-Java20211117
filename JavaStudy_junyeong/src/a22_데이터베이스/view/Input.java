@@ -1,13 +1,19 @@
-package a22_데이터베이스;
+package a22_데이터베이스.view;
 
 import java.util.Scanner;
+
+import a22_데이터베이스.dto.SigninDto;
+import a22_데이터베이스.dto.SignupDto;
+import a22_데이터베이스.service.AuthService;
 
 public class Input {
 
 	private Scanner scanner;
+	private AuthService authService;
 	
 	public Input() {
 		scanner = new Scanner(System.in);
+		authService = new AuthService();
 	}
 	
 	public String cmdInput() {
@@ -23,21 +29,34 @@ public class Input {
 	public SignupDto signupInsert() {
 		
 		System.out.print("아이디 : ");
-		String username = signupInput();
+		String username = checkUsername();
 		
 		System.out.print("비밀번호 : ");
-		String password = signupInput();
+		String password = input();
 		
 		System.out.print("이름 : ");
-		String name = signupInput();
+		String name = input();
 		
 		System.out.print("이메일 : ");
-		String email = signupInput();
+		String email = input();
 		
 		return new SignupDto(username, password, name, email);
 	}
 	
-	public String signupInput() {
+	public String checkUsername() {
+		String username = null;
+		while(true) {
+			username = input();
+			if(authService.checkUsername(username) == 0) {
+				break;
+			} else {
+				System.out.println("이미 존재하는 아이디입니다.");
+			}
+		}
+		return username;
+	}
+	
+	public String input() {
 		String data = null;
 		
 		while(true) {
@@ -56,5 +75,14 @@ public class Input {
 		} else {
 			return false;
 		}
+	}
+	
+	public SigninDto signinInsert() {
+		System.out.print("아이디 : ");
+		String username = input();
+		System.out.print("비밀번호 : ");
+		String password = input();
+		
+		return new SigninDto(username, password);
 	}
 }

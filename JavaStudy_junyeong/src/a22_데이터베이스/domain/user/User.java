@@ -1,6 +1,6 @@
-package a22_데이터베이스;
+package a22_데이터베이스.domain.user;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +18,6 @@ public class User {
 	private String password;
 	private String name;
 	private String email;
-	private LocalDateTime create_date;
-	private LocalDateTime update_date;
+	private Date create_date;
+	private Date update_date;
 }
