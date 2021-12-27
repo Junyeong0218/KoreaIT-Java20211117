@@ -21,7 +21,7 @@ public class AuthService {
 	}
 	
 	public boolean signup() {
-		SignupDto signupDto = input.signupInsert();
+		SignupDto signupDto = input.signupInsert(this);
 		User userEntity = signupDto.toEntity();
 		
 		int result = userDao.insertUser(userEntity);

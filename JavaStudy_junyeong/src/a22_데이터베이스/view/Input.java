@@ -9,11 +9,9 @@ import a22_데이터베이스.service.AuthService;
 public class Input {
 
 	private Scanner scanner;
-	private AuthService authService;
 	
 	public Input() {
 		scanner = new Scanner(System.in);
-		authService = new AuthService();
 	}
 	
 	public String cmdInput() {
@@ -26,10 +24,10 @@ public class Input {
 		System.out.println();
 	}
 	
-	public SignupDto signupInsert() {
+	public SignupDto signupInsert(AuthService authService) {
 		
 		System.out.print("아이디 : ");
-		String username = checkUsername();
+		String username = checkUsername(authService);
 		
 		System.out.print("비밀번호 : ");
 		String password = input();
@@ -43,7 +41,7 @@ public class Input {
 		return new SignupDto(username, password, name, email);
 	}
 	
-	public String checkUsername() {
+	public String checkUsername(AuthService authService) {
 		String username = null;
 		while(true) {
 			username = input();
