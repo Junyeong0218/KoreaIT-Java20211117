@@ -35,20 +35,24 @@ public class MainController extends JFrame {
 
 	public MainController() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 400);
+		setSize(700, 400);
+		setLocationRelativeTo(null);
 		
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainCard = new CardLayout();
 		mainPanel.setLayout(mainCard);
-		mainPanel.setSize(700, 400);
+		mainPanel.setBounds(0, 0, 700, 400);
 		setContentPane(mainPanel);
 		
 		JPanel welcomePanel = new WelcomePanel(mainPanel, mainCard);
 		JPanel signinPanel = new SigninPanel(mainPanel, mainCard);
-		JPanel signupPanel = new SignupPanel(mainPanel, mainCard);
-		JPanel indexPanel = new IndexPanel(mainPanel, mainCard);
-		JPanel accountsPanel = new AccountsPanel(mainPanel, mainCard);
+		SignupPanel signupPanel = SignupPanel.getInstance();
+		signupPanel.setCard(mainPanel, mainCard);
+		IndexPanel indexPanel = IndexPanel.getInstance();
+		indexPanel.setCard(mainPanel, mainCard);
+		AccountsPanel accountsPanel = AccountsPanel.getInstance();
+		accountsPanel.setCard(mainPanel, mainCard);
 		
 		mainPanel.add(welcomePanel, "welcomePanel");
 		mainPanel.add(signinPanel, "signinPanel");

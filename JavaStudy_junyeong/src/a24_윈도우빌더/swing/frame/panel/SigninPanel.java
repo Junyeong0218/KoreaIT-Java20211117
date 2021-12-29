@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -15,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import a24_윈도우빌더.service.AuthService;
+import a24_윈도우빌더.session.Principal;
 import a24_윈도우빌더.swing.dto.SigninDto;
 
 public class SigninPanel extends JPanel {
@@ -23,10 +25,14 @@ public class SigninPanel extends JPanel {
 	private AuthService authService;
 	private JTextField usernameText;
 	private JPasswordField passwordText;
+	private Principal principal;
+	private IndexPanel indexPanel;
 
 	public SigninPanel(JPanel mainPanel, CardLayout mainCard) {
 		
 		authService = new AuthService();
+		principal = Principal.getInstance();
+		indexPanel = IndexPanel.getInstance();
 		
 		setLayout(null);
 		setSize(700, 400);
@@ -34,13 +40,13 @@ public class SigninPanel extends JPanel {
 		JLabel signinTitle = new JLabel("JAVA \uC2A4\uC719 \uC218\uC5C5");
 		signinTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		signinTitle.setFont(new Font("맑은 고딕", Font.BOLD, 16));
-		signinTitle.setBounds(268, 87, 150, 60);
+		signinTitle.setBounds(268, 50, 150, 60);
 		add(signinTitle);
 		
 		JPanel signinItems = new JPanel();
 		signinItems.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		signinItems.setBackground(Color.WHITE);
-		signinItems.setBounds(200, 167, 290, 170);
+		signinItems.setBounds(200, 120, 290, 170);
 		add(signinItems);
 		signinItems.setLayout(null);
 		
@@ -71,15 +77,22 @@ public class SigninPanel extends JPanel {
 		signinBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int result = authService.signin(new SigninDto(usernameText.getText(), passwordText.getText()));
+				SigninDto signinDto = new SigninDto(usernameText.getText(), passwordText.getText());
+				int result = authService.signin(signinDto);
 				
 				if(result == 2) {
 					// 로그인 성공
+					usernameText.setText("");
+					passwordText.setText("");
+					JOptionPane.showMessageDialog(null, principal.getUser().getName() + "님 환영합니다.", "로그인 성공", JOptionPane.PLAIN_MESSAGE);
+					indexPanel.getProfileBtn().setText(principal.getUser().getUsername() + "님의 회원정보");
 					mainCard.show(mainPanel, "indexPanel");
 				} else if(result == 0) {
-					System.out.println("존재하지 않는 아이디입니다.");
+					JOptionPane.showMessageDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE);
+					//JOptionPane.showConfirmDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == 0 | no == 1
+					//JOptionPane.showInputDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == input text -> String
 				} else if(result == 1) {
-					System.out.println("비밀번호가 일치하지 않습니다.");
+					JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "비밀번호 오류", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

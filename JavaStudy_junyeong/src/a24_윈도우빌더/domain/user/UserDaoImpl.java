@@ -130,4 +130,53 @@ public class UserDaoImpl implements UserDao {
 		
 		return user;
 	}
+	
+	@Override
+	public int updateProfileById(User user) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "update user_mst set name = ?, email = ?, update_date = now() where id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user.getName());
+			pstmt.setString(2, user.getEmail());
+			pstmt.setInt(3, user.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int updatePasswordById(User user) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "update user_mst set password = ?, update_date = now() where id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user.getPassword());
+			pstmt.setInt(2, user.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
 }
