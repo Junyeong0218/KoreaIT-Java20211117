@@ -18,6 +18,8 @@ import javax.swing.border.LineBorder;
 import a24_윈도우빌더.service.AuthService;
 import a24_윈도우빌더.session.Principal;
 import a24_윈도우빌더.swing.dto.SigninDto;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class SigninPanel extends JPanel {
 	
@@ -69,6 +71,14 @@ public class SigninPanel extends JPanel {
 		signinItems.add(passwordLbl);
 		
 		passwordText = new JPasswordField();
+		passwordText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 10) {
+					signin(mainPanel, mainCard);
+				}
+			}
+		});
 		passwordText.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
 		passwordText.setBounds(97, 64, 154, 21);
 		signinItems.add(passwordText);
@@ -77,28 +87,43 @@ public class SigninPanel extends JPanel {
 		signinBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				SigninDto signinDto = new SigninDto(usernameText.getText(), passwordText.getText());
-				int result = authService.signin(signinDto);
-				
-				if(result == 2) {
-					// 로그인 성공
-					usernameText.setText("");
-					passwordText.setText("");
-					JOptionPane.showMessageDialog(null, principal.getUser().getName() + "님 환영합니다.", "로그인 성공", JOptionPane.PLAIN_MESSAGE);
-					indexPanel.getProfileBtn().setText(principal.getUser().getUsername() + "님의 회원정보");
-					mainCard.show(mainPanel, "indexPanel");
-				} else if(result == 0) {
-					JOptionPane.showMessageDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE);
-					//JOptionPane.showConfirmDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == 0 | no == 1
-					//JOptionPane.showInputDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == input text -> String
-				} else if(result == 1) {
-					JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "비밀번호 오류", JOptionPane.WARNING_MESSAGE);
-				}
+				signin(mainPanel, mainCard);
 			}
 		});
 		signinBtn.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		signinBtn.setBounds(97, 113, 97, 23);
+		signinBtn.setBounds(151, 122, 100, 23);
 		signinItems.add(signinBtn);
+		
+		JButton signupBtn = new JButton("\uD68C\uC6D0\uAC00\uC785");
+		signupBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mainCard.show(mainPanel, "signupPanel");
+			}
+		});
+		signupBtn.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		signupBtn.setBounds(31, 122, 100, 23);
+		signinItems.add(signupBtn);
 
+	}
+	
+	private void signin(JPanel mainPanel, CardLayout mainCard) {
+		SigninDto signinDto = new SigninDto(usernameText.getText(), passwordText.getText());
+		int result = authService.signin(signinDto);
+		
+		if(result == 2) {
+			// 로그인 성공
+			usernameText.setText("");
+			passwordText.setText("");
+			JOptionPane.showMessageDialog(null, principal.getUser().getName() + "님 환영합니다.", "로그인 성공", JOptionPane.PLAIN_MESSAGE);
+			indexPanel.getProfileBtn().setText(principal.getUser().getUsername() + "님의 회원정보");
+			mainCard.show(mainPanel, "indexPanel");
+		} else if(result == 0) {
+			JOptionPane.showMessageDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE);
+			//JOptionPane.showConfirmDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == 0 | no == 1
+			//JOptionPane.showInputDialog(null, "존재하지 않는 아이디입니다.", "아이디 오류", JOptionPane.WARNING_MESSAGE); // yes == input text -> String
+		} else if(result == 1) {
+			JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "비밀번호 오류", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

@@ -42,4 +42,14 @@ public class AccountsService {
 			return true;
 		}
 	}
+	
+	public boolean DeleteUser() {
+		int result = userDao.deleteUserByUsername(principal.getUser().getUsername());
+		
+		if(result > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

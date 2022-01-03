@@ -58,49 +58,49 @@ public class AccountsPanel extends JPanel {
 		JLabel nameLbl = new JLabel("\uC774\uB984");
 		nameLbl.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 		nameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		nameLbl.setBounds(26, 132, 59, 30);
+		nameLbl.setBounds(25, 97, 59, 30);
 		add(nameLbl);
 		
 		nameText = new JTextField();
 		nameText.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		nameText.setBounds(99, 132, 173, 30);
+		nameText.setBounds(98, 97, 173, 30);
 		add(nameText);
 		nameText.setColumns(10);
 		
 		passwordText = new JPasswordField();
 		passwordText.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 		passwordText.setColumns(10);
-		passwordText.setBounds(418, 132, 184, 30);
+		passwordText.setBounds(417, 97, 184, 30);
 		add(passwordText);
 		
 		JLabel passwordLbl = new JLabel("\uBE44\uBC00\uBC88\uD638");
 		passwordLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		passwordLbl.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		passwordLbl.setBounds(312, 132, 92, 30);
+		passwordLbl.setBounds(311, 97, 92, 30);
 		add(passwordLbl);
 		
 		pwConfirmText = new JPasswordField();
 		pwConfirmText.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 		pwConfirmText.setColumns(10);
-		pwConfirmText.setBounds(418, 200, 184, 30);
+		pwConfirmText.setBounds(417, 165, 184, 30);
 		add(pwConfirmText);
 		
 		JLabel pwConfirmLbl = new JLabel("\uBE44\uBC00\uBC88\uD638 \uD655\uC778");
 		pwConfirmLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		pwConfirmLbl.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		pwConfirmLbl.setBounds(312, 200, 92, 30);
+		pwConfirmLbl.setBounds(311, 165, 92, 30);
 		add(pwConfirmLbl);
 		
 		emailText = new JTextField();
 		emailText.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 		emailText.setColumns(10);
-		emailText.setBounds(99, 200, 173, 30);
+		emailText.setBounds(98, 165, 173, 30);
 		add(emailText);
 		
 		JLabel emailLbl = new JLabel("\uC774\uBA54\uC77C");
 		emailLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		emailLbl.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		emailLbl.setBounds(26, 200, 59, 30);
+		emailLbl.setBounds(25, 165, 59, 30);
 		add(emailLbl);
 		
 		JButton modifyBtn = new JButton("\uC218\uC815\uD558\uAE30");
@@ -118,7 +118,7 @@ public class AccountsPanel extends JPanel {
 			}
 		});
 		modifyBtn.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		modifyBtn.setBounds(73, 277, 135, 30);
+		modifyBtn.setBounds(72, 242, 135, 30);
 		add(modifyBtn);
 		
 		JButton goBackBtn = new JButton("\uB4A4\uB85C\uAC00\uAE30");
@@ -151,6 +151,9 @@ public class AccountsPanel extends JPanel {
 						accountsDto.setPassword(password);
 						accountsService.UpdatePassword(accountsDto);
 						JOptionPane.showMessageDialog(null, "회원 정보 수정 완료", "완료", JOptionPane.PLAIN_MESSAGE);
+						passwordText.setText("");
+						pwConfirmText.setText("");
+						mainCard.show(mainPanel, "indexPanel");
 					} else {
 						JOptionPane.showMessageDialog(null, "기존의 비밀번호와 일치하지 않습니다.\n비밀번호를 다시 한번 확인해주세요. ", "비밀번호 오류", JOptionPane.WARNING_MESSAGE);
 					}
@@ -161,8 +164,31 @@ public class AccountsPanel extends JPanel {
 			}
 		});
 		modifyPwBtn.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		modifyPwBtn.setBounds(406, 283, 135, 30);
+		modifyPwBtn.setBounds(405, 248, 135, 30);
 		add(modifyPwBtn);
+		
+		JButton deleteUserBtn = new JButton("\uD68C\uC6D0\uD0C8\uD1F4");
+		deleteUserBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String originPw = JOptionPane.showInputDialog(null, "기존의 비밀번호를 입력해주세요.", "비밀번호 인증", JOptionPane.INFORMATION_MESSAGE);
+				
+				if(originPw.equals(principal.getUser().getPassword())) {
+					if(accountsService.DeleteUser()) {
+						JOptionPane.showMessageDialog(null, "회원탈퇴가 정상적으로 이루어졌습니다.", "회원탈퇴 완료", JOptionPane.PLAIN_MESSAGE);
+						principal.setUser(null);
+						mainCard.show(mainPanel, "signinPanel");
+					} else {
+						System.out.println("false");
+					}
+				} else {
+					System.out.println("비밀번호가 다릅니다.");
+				}
+			}
+		});
+		deleteUserBtn.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		deleteUserBtn.setBounds(537, 310, 97, 23);
+		add(deleteUserBtn);
 		
 		
 	}
